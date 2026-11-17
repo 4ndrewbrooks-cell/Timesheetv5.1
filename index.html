@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#030037">
+<title>ISS Timesheet — Job Entry, PDF Preview & Share (v5)</title>
+<style>
+:root{--navy:#030037;--blue:#1064d3;--light:#edf3ff;--border:#d9e1ee;--ink:#202838;--muted:#596579;--surface:#fff}
+*{box-sizing:border-box}body{margin:0;font:15px/1.4 system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--ink);background:#f3f5fa;padding-bottom:35px}button,input,textarea,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid #1680f8;outline-offset:1px}
+header{background:linear-gradient(110deg,#030037,#1745a4);color:#fff;padding:22px max(18px,calc((100vw - 1050px)/2)) 24px}h1{font-size:24px;margin:0 0 2px}header p{margin:0;color:#dbe5ff;font-size:13px}main{max-width:1090px;margin:auto;padding:17px 16px}.panel{background:white;border:1px solid var(--border);border-radius:12px;padding:13px 15px;margin:0 0 12px;box-shadow:0 2px 8px #14294c0b}.panel h2{font-size:15px;margin:0 0 12px}.profile{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.field label,.small-field label{display:block;color:var(--muted);font-size:11px;font-weight:700;margin-bottom:4px}.field input,.small-field input{width:100%;min-height:39px;padding:8px 10px;border:1px solid var(--border);border-radius:7px;background:white;color:var(--ink)}.field.wide{grid-column:span 2}.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 8px}.btn{border:1px solid var(--border);background:white;color:var(--ink);font-weight:650;padding:10px 12px;min-height:41px;border-radius:9px}.btn.primary{background:var(--blue);border-color:var(--blue);color:white}.btn.soft{background:var(--light);border-color:#d3dff8;color:#163b82}.btn:disabled{opacity:.5}.hint{font-size:12px;color:var(--muted);margin:5px 0 13px}#status{font-size:12px;min-height:1.6em;color:#126044}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:12px 0 15px}.stat{background:#fff;border:1px solid var(--border);border-radius:9px;padding:11px 13px}.stat small{display:block;color:var(--muted)}.stat strong{font-size:19px}.day{background:#fff;border:1px solid var(--border);border-radius:10px;margin:8px 0;overflow:hidden}.day summary{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:9px;padding:11px 14px;background:#fff;list-style:none}.day summary::-webkit-details-marker{display:none}.day[open] summary{background:#f0f4fa;border-bottom:1px solid var(--border)}.day strong{font-size:15px}.day small{font-size:12px;color:var(--muted)}.daytotal{color:#173d80;font-weight:750}.daybody{padding:10px}.scroll{overflow-x:auto;max-width:100%;border:1px solid var(--border);border-radius:7px;-webkit-overflow-scrolling:touch}.jobs{min-width:955px;width:100%;border-collapse:collapse;table-layout:fixed;font-size:12px}.jobs th{background:#e9effa;color:#42516e;text-align:left;font-size:11px;white-space:nowrap}.jobs th,.jobs td{border-bottom:1px solid #e4e9f2;border-right:1px solid #eef1f6;padding:5px 4px;vertical-align:middle}.jobs tbody tr:nth-child(odd){background:#edf5ff}.jobs tbody tr:nth-child(even){background:#fff}.jobs input,.jobs select{width:100%;height:33px;border:1px solid #d7deeb;border-radius:5px;background:#fff;padding:4px 6px;color:#202838;font-size:12px}.jobs input[type=time]{padding:3px}.jobs th:nth-child(1){width:30px}.jobs th:nth-child(2){width:120px}.jobs th:nth-child(3){width:145px}.jobs th:nth-child(4){width:125px}.jobs th:nth-child(5),.jobs th:nth-child(6){width:92px}.jobs th:nth-child(7){width:70px}.jobs th:nth-child(8){width:112px}.jobs th:nth-child(9){width:135px}.jobs th:nth-child(10){width:65px}.rownum,.recorded{text-align:center;white-space:nowrap;color:#173d80;font-weight:700}.remove{background:transparent;border:0;color:#a53e39;padding:5px 2px;font-size:11px}.addjob{margin-top:9px;padding:7px 11px;min-height:34px;font-size:12px}.odometer{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;border-top:1px dashed var(--border);margin-top:12px;padding-top:10px;max-width:570px}.odometer .small-field input{min-height:33px;padding:5px 8px;font-size:12px}.empty{padding:14px!important;color:var(--muted);text-align:left}.extra{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.checkline{display:flex;align-items:center;gap:8px;padding-top:8px;font-size:13px}.checkline input{width:17px;height:17px}.hidden{display:none!important}.printonly{display:none}.footnote{font-size:12px;color:var(--muted);margin-top:15px}
+@media(max-width:750px){.profile,.extra{grid-template-columns:repeat(2,minmax(0,1fr))}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.field.wide{grid-column:auto}main{padding:12px 9px}.panel{padding:11px}.daybody{padding:8px}.toolbar .btn{flex:1 1 43%;font-size:13px}.odometer{gap:6px}.odometer .small-field input{font-size:11px}}
+@media(max-width:420px){.profile{grid-template-columns:1fr 1fr}.profile .field:nth-child(1){grid-column:1/-1}.hint{font-size:11px}}
+.modal-open{overflow:hidden}.previewmodal{position:fixed;inset:0;background:#101d34d9;z-index:100;overflow-y:auto;padding:15px 10px}.previewpanel{max-width:990px;margin:0 auto 30px;background:#f1f4f9;border-radius:13px;padding:16px}.previewtop{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.previewtop h2{margin:0;font-size:19px}.previewtop .hint{margin:5px 0}.previewactions{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}.previewwarning{font-size:13px;color:#982500;background:#fff0e6;border:1px solid #e8b69d;padding:9px;border-radius:6px}.pdfsheet{background:#e0e6f0;box-shadow:0 3px 10px #09132524;padding:6px;margin-bottom:17px;overflow-x:auto;border-radius:5px}.pdfsheetlabel{font-size:12px;font-weight:700;color:#344864;margin-bottom:6px}.pdfsheet canvas{display:block;background:white;width:100%;min-width:630px;height:auto;box-shadow:0 1px 4px #1d304c28}
+@media(max-width:650px){.previewmodal{padding:7px}.previewpanel{padding:10px}.previewtop h2{font-size:16px}.previewactions button{flex:1 1 45%;font-size:13px}}
+@page{size:A4 landscape;margin:8mm}
+@media print{
+ body{background:#fff;padding:0;color:#16243e;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ body>header,main{display:none!important}
+ .printonly{display:block!important;font:9px/1.25 Arial,sans-serif;color:#1a2741}
+ .printonly h1{font-size:17px;margin:0 0 6px;color:#030037}
+ .printonly .printmeta{margin:6px 0 10px;padding:6px 8px;background:#f1f5fc;border-left:3px solid #2265ae}
+ .printonly table{width:100%;border-collapse:collapse;table-layout:fixed}
+ .printonly th,.printonly td{border:1px solid #aebcd0;padding:4px 5px;vertical-align:top;overflow-wrap:anywhere}
+ .printonly th{background:#d7e6fa;color:#142d59;text-align:left}
+ .printonly .workrows tbody tr:nth-child(odd){background:#ebf4ff}
+ .printonly .workrows tbody tr:nth-child(even){background:#fff}
+ .printonly .summaryrow{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin:9px 0}
+ .printonly .sumcell{background:#edf3fc;border:1px solid #bed0e9;padding:6px}
+ .printonly .sumcell b{display:block;font-size:10px;color:#092d65}
+ .printonly .sumcell span{display:block;font-size:12px;margin-top:3px;font-weight:700}
+ .printonly h2{font-size:11px;margin:10px 0 5px;color:#132f61}
+ .printonly .bottommeta{display:flex;justify-content:space-between;margin-top:8px;border-top:1px solid #b9c9df;padding-top:7px}
+ .printonly .hintprint{font-size:7px;color:#4a586e;margin-top:6px}
+ .printonly tr{break-inside:avoid;page-break-inside:avoid}
+ .printonly thead{display:table-header-group}
+}
+
+.entryguide{border-left:4px solid #1064d3;background:#f8fbff;margin-bottom:9px}
+.entryguide h2{font-size:17px;margin-bottom:5px}
+.entryguide p{margin:0 0 9px;font-size:13px;line-height:1.5;color:#415168}
+.entryguide .btn{min-height:34px;padding:7px 11px;font-size:12px}
+.day summary:focus-visible{outline:3px solid #1064d3;outline-offset:-3px}
+.jobs textarea{width:100%;min-height:38px;max-height:120px;resize:vertical;border:1px solid #d7deeb;border-radius:5px;background:#fff;color:#202838;padding:5px 7px;font:12px/1.35 system-ui,sans-serif}
+.jobs td:before{display:none}
+@media(max-width:750px){
+ .entryguide{padding:10px 11px}
+ .daybody{padding:8px 10px 11px}
+ .scroll{overflow:visible;border:0}
+ .jobs{display:block;width:100%;min-width:0;border-collapse:separate;table-layout:auto}
+ .jobs thead{display:none}
+ .jobs tbody{display:block}
+ .jobs tr.jobrow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:9px;padding:10px;margin:0 0 10px;border:1px solid #d9e1ee;border-radius:9px;background:#f8fbff!important}
+ .jobs td{display:block;border:0;padding:0;min-width:0}
+ .jobs td:before{content:attr(data-label);display:block;color:#42516e;font-size:11px;font-weight:750;margin-bottom:4px}
+ .jobs .rownum{grid-column:1/-1;text-align:left;color:#173d80;font-weight:800;font-size:13px}
+ .jobs .rownum:before{display:none}
+ .jobs .job-note{grid-column:1/-1}
+ .jobs .job-note textarea{height:64px;min-height:64px;font-size:14px}
+ .jobs input,.jobs select{height:42px;font-size:14px;padding:6px 8px}
+ .jobs td.recorded{display:flex;flex-direction:column;justify-content:center;text-align:left;font-size:14px}
+ .jobs td.remove-cell{grid-column:1/-1;text-align:right}
+ .jobs .remove{border:1px solid #edc7c5;border-radius:6px;padding:7px 10px;background:#fff}
+ .jobs .empty{display:block}
+}
+</style>
+</head>
+<body>
+<header><h1 id="heading">ISS Timesheet</h1><p>Enter jobs and times · preview and send a compact PDF</p></header>
+<main>
+<section class="panel"><h2>Engineer and week</h2><div class="profile">
+<div class="field"><label for="engineer">Engineer name</label><input id="engineer" autocomplete="name" placeholder="Engineer name"></div>
+<div class="field"><label for="payroll">Employee / payroll number</label><input id="payroll" placeholder="Payroll number"></div>
+<div class="field"><label for="company">Company name</label><input id="company" placeholder="ISS"></div>
+<div class="field"><label for="weekEnding">Week ending (Sunday)</label><input id="weekEnding" type="date"></div>
+</div><div class="checkline"><input id="onCall" type="checkbox"><label for="onCall">On-call / standby week (7-day indicator)</label></div></section>
+<section class="panel entryguide"><h2>Enter your jobs and times</h2><p>Today's day opens automatically. Enter the <strong>job number, area, activity, start and finish times</strong> directly below. The optional <strong>job note appears beside that job on the PDF</strong>. Tap another day to work on it.</p><button type="button" class="btn soft" id="openToday">Open today's entries</button></section>
+<section id="days" aria-label="Daily timesheet entries"></section>
+<div class="toolbar"><button class="btn primary" id="newWeek">＋ New week</button><button class="btn soft" id="saveBackup">Save backup to device</button><button class="btn" id="loadBackup">Restore from device</button><button class="btn primary" id="printBtn">Preview timesheet / PDF</button><button class="btn" id="emailBtn">Preview &amp; send</button></div>
+<div class="panel" style="padding:9px 13px"><div class="field"><label for="emailTo">Email recipient (optional)</label><input id="emailTo" type="email" autocomplete="email" placeholder="Your email or anyone else’s"></div><p class="hint" style="margin-bottom:0">Preview the PDF before sending. On supported Android devices, Send PDF opens your device's share sheet with the PDF attached; choose an email app and enter or confirm the recipient there. Other browsers download the PDF for manual attachment.</p></div>
+<input id="restoreFile" class="hidden" type="file" accept=".json,application/json">
+<div id="status" role="status">Changes save automatically in this browser.</div>
+<p class="hint">A backup is a <strong>.json</strong> file. On a phone or tablet, look in <strong>Downloads</strong> (or the folder you choose). To restore it, tap <strong>Restore from device</strong> and pick it in the Files app. Browser auto-save and device backups are separate.</p>
+<section class="stats"><div class="stat"><small>Total recorded</small><strong id="hours">0h 00m</strong></div><div class="stat"><small>Salaried (net)</small><strong id="salaryHours">0h 00m</strong></div><div class="stat"><small>Basic overtime (1×)</small><strong id="basicOT">0h 00m</strong></div><div class="stat"><small>Time and a half (1.5×)</small><strong id="halfOT">0h 00m</strong></div><div class="stat"><small>Double time (2×)</small><strong id="doubleOT">0h 00m</strong></div><div class="stat"><small>Work entries</small><strong id="count">0</strong></div><div class="stat"><small>On call this week</small><strong id="calls">No</strong></div><div class="stat"><small>Business mileage</small><strong id="businessMiles">0 mi</strong></div></section>
+<p class="hint">The Notes field on each job prints in the right-hand column of the PDF next to that job. Automatic rates: Monday–Friday, time before 07:30 or after 17:30 is 1.5×; Saturday is 1.5×; Sunday is 2×. Override any row using Rate. Use Unpaid minutes each day for any breaks or non-paid time included in entries. Basic overtime (1×) can be selected per row.</p>
+<section class="panel"><h2>Vehicle and weekly summary</h2><div class="extra">
+<div class="field"><label for="registration">Vehicle registration</label><input id="registration" placeholder="AB12 CDE"></div>
+<div class="field"><label for="privateMiles">Private mileage</label><input id="privateMiles" type="number" min="0" step="1" placeholder="0"></div>
+<div class="field"><label for="standby">Standby pay / hours</label><input id="standby" placeholder="Optional"></div>
+<div class="field"><label for="sick">Sick hours</label><input id="sick" type="number" min="0" step="0.25" placeholder="0"></div>
+<div class="field"><label for="holiday">Holiday hours</label><input id="holiday" type="number" min="0" step="0.25" placeholder="0"></div>
+</div><p class="hint">Business mileage = closing − opening − private mileage, using the first and last available daily readings.</p></section>
+<p class="footnote">For important records, export a backup regularly. Browser storage can be cleared and is not a substitute for a saved file.</p>
+</main>
+<div id="printout" class="printonly"></div>
+<div id="previewModal" class="previewmodal hidden" role="dialog" aria-modal="true" aria-labelledby="previewTitle">
+ <div class="previewpanel"><div class="previewtop"><div><h2 id="previewTitle">Timesheet PDF preview</h2><p id="previewMessage" class="hint">Review the pages before sharing.</p></div><button class="btn" id="closePreview">Close</button></div>
+ <div class="previewactions"><button class="btn soft" id="downloadPdf">Save PDF to device</button><button class="btn primary" id="sendPdf">Send PDF after preview</button></div>
+ <div id="previewPages" aria-label="Timesheet PDF pages"></div>
+ <p class="hint">Pages are A4 landscape. If you have many jobs, more than two pages may be needed to avoid losing information. Nothing is sent without your action.</p>
+ </div>
+</div>
+<script>
+(()=>{'use strict';
+const DAYS=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+const STORE='iss-timesheet-v1'; // Reuses the original GitHub app storage format, where the web origin is the same.
+const ACTIVE='iss-timesheet-selected-week';
+const $=id=>document.getElementById(id);
+const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const sunday=()=>{let d=new Date();d.setDate(d.getDate()+(7-d.getDay())%7);return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-')};
+const blankEntry=()=>({site:'',activity:'',task:'',start:'',finish:'',rate:'',callout:'',mileage:'',notes:''});
+const fresh=(date,name='',payroll='',company='ISS')=>({weekEnding:date,engineer:name,payroll,company,onCall:false,registration:'',privateMiles:'0',standby:'',sick:'',holiday:'',emailTo:'',days:DAYS.map(()=>({entries:[blankEntry()],opening:'',closing:'',unpaid:'0'}))});
+function normalise(w,date){let o={...fresh(date),...w,weekEnding:date};o.days=DAYS.map((_,di)=>({...{entries:[],opening:'',closing:'',unpaid:'0'},...(w.days?.[di]||{}),entries:Array.isArray(w.days?.[di]?.entries)&&w.days[di].entries.length?w.days[di].entries.map(e=>({...blankEntry(),...e})): [blankEntry()]}));return o}
+let activeDay=(new Date().getDay()+6)%7;
+let weeks={};let current;
+try{const data=JSON.parse(localStorage.getItem(STORE)||'{}');if(data&&typeof data==='object'&&!Array.isArray(data))weeks=data}catch{}
+const selected=(()=>{try{return localStorage.getItem(ACTIVE)}catch{return null}})();
+const activeDate=selected&&weeks[selected]?selected:(Object.keys(weeks).sort().at(-1)||sunday());
+current=normalise(weeks[activeDate]||fresh(activeDate),activeDate);weeks[activeDate]=current;
+function minutes(a,b){if(!a||!b)return 0;let s=a.split(':').map(Number),e=b.split(':').map(Number);let n=e[0]*60+e[1]-s[0]*60-s[1];return n<0?n+1440:n}
+function hm(n){return Math.floor(n/60)+'h '+String(n%60).padStart(2,'0')+'m'}
+function dateAt(di){let d=new Date(current.weekEnding+'T12:00:00');d.setDate(d.getDate()-6+di);return d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})}
+function totalDay(d){return d.entries.reduce((n,e)=>n+minutes(e.start,e.finish),0)}
+function totalWeek(){return current.days.reduce((n,d)=>n+totalDay(d),0)}
+function clockMins(time){if(!/^\d{2}:\d{2}$/.test(time||''))return null;let [h,m]=time.split(':').map(Number);return h*60+m}
+function perEntry(e,di){
+ const out={salary:0,basic:0,half:0,double:0};const start=clockMins(e.start),finish=clockMins(e.finish);
+ if(start===null||finish===null)return out;
+ let end=finish<start?finish+1440:finish;
+ const forced={basic:'basic',half:'half',double:'double'}[e.rate];
+ if(forced){out[forced]+=end-start;return out}
+ // Each minute is assigned to the relevant day and local clock period. This supports overnight shifts.
+ for(let t=start;t<end;t++){
+  const day=(di+Math.floor(t/1440))%7,minute=t%1440;
+  const k=day===6?'double':day===5?'half':(minute<450||minute>=1050?'half':'salary');out[k]++;
+ }
+ return out
+}
+function weekBreakdown(){let t={salary:0,basic:0,half:0,double:0,unpaid:0,recorded:0};
+ current.days.forEach((d,di)=>{let daySalary=0;d.entries.forEach(e=>{let b=perEntry(e,di);for(const k of ['salary','basic','half','double']){t[k]+=b[k];if(k==='salary')daySalary+=b[k]}t.recorded+=minutes(e.start,e.finish)});
+ const unpaid=Math.min(daySalary,Math.max(0,Math.round(Number(d.unpaid)||0)));t.salary-=unpaid;t.unpaid+=unpaid
+ });return t}
+function dayMiles(d){return d.opening!==''&&d.closing!==''&&Number(d.closing)>=Number(d.opening)?Number(d.closing)-Number(d.opening):null}
+function businessMiles(){let readings=current.days.filter(d=>d.opening!==''&&d.opening!==undefined&&Number.isFinite(Number(d.opening)));let closes=current.days.filter(d=>d.closing!==''&&d.closing!==undefined&&Number.isFinite(Number(d.closing)));let gross=readings.length&&closes.length?Math.max(0,Number(closes[closes.length-1].closing)-Number(readings[0].opening)):0;return Math.max(0,gross-Math.max(0,Number(current.privateMiles)||0))}
+function save(){weeks[current.weekEnding]=current;try{localStorage.setItem(STORE,JSON.stringify(weeks));localStorage.setItem(ACTIVE,current.weekEnding);$('status').textContent='Saved automatically on this device';$('status').style.color='#126044'}catch(e){$('status').textContent='Browser auto-save unavailable — use Save backup to device';$('status').style.color='#9c281a'}refreshTotals()}
+function refreshTotals(){let b=weekBreakdown();$('hours').textContent=hm(b.recorded);$('salaryHours').textContent=hm(b.salary);$('basicOT').textContent=hm(b.basic);$('halfOT').textContent=hm(b.half);$('doubleOT').textContent=hm(b.double);let all=current.days.flatMap(d=>d.entries);$('count').textContent=all.filter(e=>e.start||e.finish||e.task||e.activity||e.site||e.notes).length;$('calls').textContent=current.onCall?'Yes':'No';$('businessMiles').textContent=businessMiles()+' mi'}
+function render(){
+ for(const id of ['engineer','payroll','registration','privateMiles','standby','sick','holiday','emailTo'])$(id).value=current[id]??'';
+ $('company').value=current.company??'ISS';$('onCall').checked=!!current.onCall;$('weekEnding').value=current.weekEnding;
+ $('heading').textContent=(current.company||'ISS')+' Timesheet';
+ $('days').innerHTML=current.days.map((d,di)=>{
+ const rows=d.entries.map((e,ei)=>`<tr class="jobrow">
+ <td class="rownum">Job ${ei+1}</td>
+ <td data-label="Job number"><input aria-label="Job number for job ${ei+1}" data-day="${di}" data-entry="${ei}" data-key="task" value="${esc(e.task)}" placeholder="Job no."></td>
+ <td data-label="Area / site"><input aria-label="Area for job ${ei+1}" data-day="${di}" data-entry="${ei}" data-key="site" value="${esc(e.site)}" placeholder="Area / site"></td>
+ <td data-label="Activity"><select aria-label="Activity for job ${ei+1}" data-day="${di}" data-entry="${ei}" data-key="activity">
+ ${['','Travel','PPM','Reactive','Meeting','Training','Unproductive time'].map(opt=>`<option value="${esc(opt)}" ${e.activity===opt?'selected':''}>${esc(opt||'Choose activity')}</option>`).join('')}
+ ${e.activity&&!['Travel','PPM','Reactive','Meeting','Training','Unproductive time'].includes(e.activity)?`<option value="${esc(e.activity)}" selected>${esc(e.activity)}</option>`:''}</select></td>
+ <td data-label="Start time"><input aria-label="Start time for job ${ei+1}" type="time" data-day="${di}" data-entry="${ei}" data-key="start" value="${esc(e.start)}"></td>
+ <td data-label="Finish time"><input aria-label="Finish time for job ${ei+1}" type="time" data-day="${di}" data-entry="${ei}" data-key="finish" value="${esc(e.finish)}"></td>
+ <td data-label="Calculated hours" class="recorded">${hm(minutes(e.start,e.finish))}</td>
+ <td data-label="Overtime rate"><select aria-label="Overtime rate for job ${ei+1}" data-day="${di}" data-entry="${ei}" data-key="rate"><option value="" ${!e.rate?'selected':''}>Auto</option><option value="basic" ${e.rate==='basic'?'selected':''}>Basic OT 1×</option><option value="half" ${e.rate==='half'?'selected':''}>Time 1.5×</option><option value="double" ${e.rate==='double'?'selected':''}>Double 2×</option></select></td>
+ <td class="job-note" data-label="Notes for PDF (optional)"><textarea aria-label="Notes on PDF for job ${ei+1}" data-day="${di}" data-entry="${ei}" data-key="notes" placeholder="A short note appears next to this job in the PDF">${esc(e.notes)}</textarea></td>
+ <td class="remove-cell"><button type="button" class="remove" data-remove="${di}:${ei}" aria-label="Remove job ${ei+1}">Remove job</button></td></tr>`).join('');
+ return `<details class="day" data-day-panel="${di}" ${di===activeDay?'open':''}><summary><div><strong>${DAYS[di]}</strong><br><small>${dateAt(di)} · ${d.entries.filter(e=>e.site||e.task||e.activity||e.start||e.finish||e.notes).length} recorded job(s)</small></div><div class="daytotal">${hm(totalDay(d))}</div></summary>
+ <div class="daybody"><div class="scroll" role="region" aria-label="${DAYS[di]} job entries" tabindex="0"><table class="jobs">
+ <thead><tr><th>#</th><th>Job number</th><th>Area / site</th><th>Activity</th><th>Start</th><th>Finish</th><th>Hours</th><th>Rate</th><th>Notes (PDF)</th><th></th></tr></thead>
+ <tbody>${rows}</tbody></table></div>
+ <button type="button" class="btn soft addjob" data-add="${di}">＋ Add another job</button>
+ <div class="odometer"><div class="small-field"><label>Opening mileage</label><input type="number" min="0" data-day="${di}" data-mile="opening" value="${esc(d.opening)}" placeholder="Optional"></div><div class="small-field"><label>Closing mileage</label><input type="number" min="0" data-day="${di}" data-mile="closing" value="${esc(d.closing)}" placeholder="Optional"></div><div class="small-field"><label>Day's mileage</label><input data-day-mileage value="${dayMiles(d)!==null?dayMiles(d)+' mi':'—'}" readonly></div><div class="small-field"><label>Unpaid minutes (optional)</label><input type="number" min="0" max="600" step="5" data-day="${di}" data-mile="unpaid" value="${esc(d.unpaid??0)}" placeholder="0"></div></div>
+ </div></details>`
+ }).join('');refreshTotals()}
+function updateJob(ev){let el=ev.target;if(el.dataset.day===undefined)return;const di=Number(el.dataset.day),day=current.days[di];if(!day)return;
+ if(el.dataset.key!==undefined){const entry=day.entries[Number(el.dataset.entry)];if(!entry)return;entry[el.dataset.key]=el.value;
+ const row=el.closest('.jobrow');if(row)row.querySelector('.recorded').textContent=hm(minutes(entry.start,entry.finish));
+ }else if(el.dataset.mile){day[el.dataset.mile]=el.value;const disp=el.closest('.day').querySelector('[data-day-mileage]');disp.value=dayMiles(day)!==null?dayMiles(day)+' mi':'—'}
+ const panel=el.closest('.day');if(panel){panel.querySelector('.daytotal').textContent=hm(totalDay(day));const summary=panel.querySelector('summary small');if(summary)summary.textContent=`${dateAt(di)} · ${day.entries.filter(e=>e.site||e.task||e.activity||e.start||e.finish||e.notes).length} recorded job(s)`;}save();}
+$('days').addEventListener('input',updateJob);$('days').addEventListener('change',updateJob);
+$('openToday').onclick=()=>{activeDay=(new Date().getDay()+6)%7;const pane=$('days').querySelectorAll('.day')[activeDay];if(pane){pane.open=true;pane.scrollIntoView({behavior:'smooth',block:'start'});}};
+$('days').addEventListener('click',ev=>{const add=ev.target.closest('[data-add]');if(add){const di=Number(add.dataset.add);activeDay=di;current.days[di].entries.push(blankEntry());save();render();const pane=$('days').querySelectorAll('.day')[di];pane.open=true;pane.querySelector('.jobrow:last-child input[data-key="task"]')?.focus();return}
+ const remove=ev.target.closest('[data-remove]');if(remove){const [di,ei]=remove.dataset.remove.split(':').map(Number);if(!confirm('Remove this job entry?'))return;current.days[di].entries.splice(ei,1);if(!current.days[di].entries.length)current.days[di].entries.push(blankEntry());activeDay=di;save();render();$('days').querySelectorAll('.day')[di].open=true;}});
+for(const id of ['engineer','payroll','registration','privateMiles','standby','sick','holiday','company','emailTo']){$(id).addEventListener('input',()=>{current[id]=$(id).value;if(id==='company')$('heading').textContent=(current.company||'ISS')+' Timesheet';save()})}
+$('onCall').addEventListener('change',()=>{current.onCall=$('onCall').checked;save()});
+$('weekEnding').addEventListener('change',()=>{const date=$('weekEnding').value;if(!date)return;let prev=current;current=normalise(weeks[date]||{...fresh(date,prev.engineer,prev.payroll,prev.company),emailTo:prev.emailTo||''},date);save();render()});
+$('newWeek').onclick=()=>{const date=prompt('Enter the week-ending Sunday (YYYY-MM-DD):',sunday());if(!date)return;if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||Number.isNaN(new Date(date+'T12:00:00').getTime())){alert('Enter a valid date in YYYY-MM-DD format.');return}let prev=current;current=normalise(weeks[date]||{...fresh(date,prev.engineer,prev.payroll,prev.company),emailTo:prev.emailTo||''},date);save();render()};
+async function backup(){const name='ISS-timesheet-backup-'+new Date().toISOString().slice(0,10)+'.json';const blob=new Blob([JSON.stringify({app:'ISS Timesheet',version:3,created:new Date().toISOString(),weeks},null,2)],{type:'application/json'});
+ if(typeof window.showSaveFilePicker==='function')try{let handle=await showSaveFilePicker({suggestedName:name,types:[{description:'JSON backup',accept:{'application/json':['.json']}}]});let writable=await handle.createWritable();await writable.write(blob);await writable.close();$('status').textContent='Backup saved to your chosen folder: '+name;return}catch(e){if(e.name==='AbortError')return}
+ let a=document.createElement('a'),url=URL.createObjectURL(blob);a.href=url;a.download=name;document.body.appendChild(a);a.click();$('status').textContent='Backup download requested: '+name+'. Check Downloads in Files.';setTimeout(()=>{a.remove();URL.revokeObjectURL(url)},60000)}
+$('saveBackup').onclick=()=>backup().catch(e=>alert('Backup failed: '+e.message));
+$('loadBackup').onclick=()=>$('restoreFile').click();
+$('restoreFile').onchange=async ev=>{let file=ev.target.files?.[0];if(!file)return;try{let payload=JSON.parse(await file.text());if(!payload.weeks||typeof payload.weeks!=='object'||Array.isArray(payload.weeks))throw Error('Not a timesheet backup');const items=Object.entries(payload.weeks).filter(([k,w])=>/^\d{4}-\d{2}-\d{2}$/.test(k)&&Array.isArray(w?.days)&&w.days.length===7);if(!items.length)throw Error('No valid weeks');let overwritten=items.filter(([k])=>weeks[k]).length;if(overwritten&&!confirm('Restore '+items.length+' week(s)? '+overwritten+' existing week(s) will be overwritten.'))return;let next={...weeks};for(const [k,w] of items)next[k]=normalise(w,k);localStorage.setItem(STORE,JSON.stringify(next));weeks=next;current=weeks[items.map(([k])=>k).sort().at(-1)];try{localStorage.setItem(ACTIVE,current.weekEnding)}catch{}render();$('status').textContent='Restored '+items.length+' week(s) from '+file.name;alert('Restored '+items.length+' week(s).')}catch(e){alert('Could not restore that file. Select a .json timesheet backup. '+e.message)}finally{ev.target.value=''}};
+function weeklyText(){let b=weekBreakdown();let lines=[`${current.company||'ISS'} — Weekly timesheet`,`Week ending: ${current.weekEnding}`,`Engineer: ${current.engineer||'—'}`,`Payroll: ${current.payroll||'—'}`,`On call: ${current.onCall?'Yes':'No'}`,''];
+ current.days.forEach((d,di)=>{let rows=d.entries.filter(e=>e.site||e.activity||e.task||e.start||e.finish);if(!rows.length)return;lines.push(DAYS[di]+' '+dateAt(di));rows.forEach(e=>lines.push(`${e.task||'—'} | ${e.site||'—'} | ${e.activity||'—'} | ${e.start||'—'}-${e.finish||'—'} | ${hm(minutes(e.start,e.finish))} | ${({basic:'1x',half:'1.5x',double:'2x'})[e.rate]||'Auto'}`));lines.push('')});
+ lines.push(`Total recorded: ${hm(b.recorded)}`,`Salaried: ${hm(b.salary)}`,`Basic OT 1×: ${hm(b.basic)}`,`Time and a half: ${hm(b.half)}`,`Double time: ${hm(b.double)}`,`Unpaid excluded from salaried: ${hm(b.unpaid)}`,`Vehicle: ${current.registration||'—'}`,`Business mileage: ${businessMiles()} mi`,`Private mileage: ${current.privateMiles||0} mi`,`Standby: ${current.standby||'—'}`,`Sick: ${current.sick||0} hours`,`Holiday: ${current.holiday||0} hours`);return lines.join('\n')}
+// PDF preview and export are generated from the same page drawing instructions.
+// No network connection or PDF library is required.
+const PAGE_W=842,PAGE_H=595,PDF_MARGIN=30,PDF_TABLE_X=PDF_MARGIN,PDF_TABLE_W=PAGE_W-2*PDF_MARGIN;
+const PDF_COLS=[78,85,145,89,54,54,62,67,148];
+const PDF_HEADERS=['Date','Job number','Area / site','Activity','Start','Finish','Hours','Rate','Notes'];
+const PAGE_TOP=83,PAGE_BODY_BOTTOM=550,FINAL_SPACE=210;
+const pdfMeasure=document.createElement('canvas').getContext('2d');
+const pColors={ink:'#1b2941',navy:'#030037',blue:'#dfeeff',line:'#b5c6dd',pale:'#f2f6fe',white:'#ffffff',green:'#1660ab',muted:'#52647d'};
+// Use characters supported by PDF's built-in Helvetica fonts to keep the HTML fully offline.
+function plainPdfText(value){return String(value??'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').replace(/[‘’]/g,"'").replace(/[“”]/g,'"').replace(/[—–−]/g,'-').replace(/[×]/g,'x').replace(/[•·]/g,'-').replace(/[£]/g,'GBP ').replace(/[^\x20-\x7E]/g,'?')}
+function wrapPdfText(value,width,size=8.3,bold=false){
+ const text=plainPdfText(value||'-').replace(/\s+/g,' ').trim()||'-';pdfMeasure.font=`${bold?'bold ':''}${size}px Arial`;
+ const words=text.split(' '),lines=[];let line='';
+ for(const word of words){let next=line?line+' '+word:word;
+  if(pdfMeasure.measureText(next).width<=width){line=next;continue}
+  if(line){lines.push(line);line=''}
+  if(pdfMeasure.measureText(word).width<=width){line=word;continue}
+  let piece='';for(const char of word){if(piece&&pdfMeasure.measureText(piece+char).width>width){lines.push(piece);piece=''}piece+=char}line=piece;
+ }
+ if(line)lines.push(line);return lines.length?lines:['-']
+}
+function pdfRowFromEntry(di,e){
+ const values=[dateAt(di),e.task||'-',e.site||'-',e.activity||'-',e.start||'-',e.finish||'-',hm(minutes(e.start,e.finish)),({basic:'Basic OT',half:'1.5x',double:'2x'})[e.rate]||'Auto',e.notes||'-'];
+ const wrapped=values.map((v,i)=>wrapPdfText(v,PDF_COLS[i]-9,i===0?7.8:8.1,false));
+ return {values,wrapped,h:Math.max(18,Math.max(...wrapped.map(a=>a.length))*9.8+7.5)}
+}
+function currentPdfRows(){return current.days.flatMap((d,di)=>d.entries.filter(e=>e.site||e.activity||e.task||e.start||e.finish||e.notes).map(e=>pdfRowFromEntry(di,e)))}
+function pdfPagesPlan(rows){const tableHeadH=21,availableFull=PAGE_BODY_BOTTOM-PAGE_TOP-tableHeadH,availableLast=availableFull-FINAL_SPACE;
+ const pages=[];let next=0;let remain=rows.reduce((s,r)=>s+r.h,0);
+ if(!rows.length)return [[]];
+ while(next<rows.length){const cap=remain<=availableLast?availableLast:availableFull;let h=0,chunk=[];
+  while(next<rows.length && (h+rows[next].h<=cap || chunk.length===0)){
+   const r=rows[next++];chunk.push(r);h+=r.h;remain-=r.h;
+  }
+  pages.push(chunk);
+  if(pages.length>150)throw Error('Timesheet is too long for a single PDF.');
+ }
+ // If the last page has no room for the summary, place the summary on a separate page.
+ const used=pages.at(-1).reduce((s,r)=>s+r.h,0);
+ if(used>availableLast)pages.push([]);
+ return pages;
+}
+function pdfPageCommands(chunk,pageNo,pageCount,isFinal){
+ const ops=[];const rect=(x,y,w,h,fill,stroke=null)=>ops.push({kind:'rect',x,y,w,h,fill,stroke});
+ const line=(x1,y1,x2,y2,color=pColors.line,lw=.6)=>ops.push({kind:'line',x1,y1,x2,y2,color,lw});
+ const text=(x,y,value,size=8,color=pColors.ink,bold=false)=>ops.push({kind:'text',x,y,value:plainPdfText(value),size,color,bold});
+ rect(0,0,PAGE_W,PAGE_H,pColors.white);
+ rect(0,0,PAGE_W,8,pColors.navy);
+ text(PDF_MARGIN,32,(current.company||'ISS')+'  |  Weekly timesheet',17,pColors.navy,true);
+ text(PAGE_W-PDF_MARGIN-76,31,`${pageNo} / ${pageCount}`,9,pColors.muted,true);
+ rect(PDF_MARGIN,41,PDF_TABLE_W,29,pColors.pale);
+ text(PDF_MARGIN+7,52,`Engineer: ${current.engineer||'-'}`,9,pColors.ink,true);
+ text(PDF_MARGIN+315,52,`Payroll: ${current.payroll||'-'}`,8.4,pColors.ink);
+ text(PDF_MARGIN+550,52,`Week ending: ${current.weekEnding}`,8.4,pColors.ink);
+ text(PDF_MARGIN+7,64,`On call: ${current.onCall?'Yes':'No'}     Vehicle: ${current.registration||'-'}`,8,pColors.muted);
+ let x=PDF_TABLE_X,y=PAGE_TOP;
+ PDF_COLS.forEach((w,i)=>{rect(x,y,w,21,pColors.blue,pColors.line);text(x+4,y+14,PDF_HEADERS[i],8,pColors.navy,true);x+=w});y+=21;
+ for(let ri=0;ri<chunk.length;ri++){
+  const r=chunk[ri];x=PDF_TABLE_X;
+  PDF_COLS.forEach((w,i)=>{rect(x,y,w,r.h,ri%2===0?pColors.pale:pColors.white,pColors.line);
+   for(let li=0;li<r.wrapped[i].length;li++)text(x+4,y+11+li*9.8,r.wrapped[i][li],i===0?7.8:8.1,pColors.ink);
+   x+=w
+  });y+=r.h;
+ }
+ if(chunk.length===0){rect(PDF_TABLE_X,y,PDF_TABLE_W,21,pColors.white,pColors.line);text(PDF_TABLE_X+5,y+14,'No work entries recorded on this week.',8.7);y+=21}
+ if(isFinal){
+  const b=weekBreakdown();let sy=y+13;const gap=5,w=(PDF_TABLE_W-gap*4)/5;
+  [['TOTAL RECORDED',b.recorded],['SALARIED (NET)',b.salary],['BASIC OVERTIME',b.basic],['TIME AND A HALF',b.half],['DOUBLE TIME',b.double]].forEach(([label,val],i)=>{
+   const xx=PDF_MARGIN+i*(w+gap);rect(xx,sy,w,43,pColors.pale,pColors.line);text(xx+6,sy+13,label,8,pColors.navy,true);text(xx+6,sy+31,hm(val),13,pColors.ink,true)
+  });
+  sy+=59;text(PDF_MARGIN,sy,'Vehicle summary',10,pColors.navy,true);sy+=9;
+  const vs=[['',...DAYS.map(d=>d.slice(0,3))],['Opening',...current.days.map(d=>d.opening||'-')],['Closing',...current.days.map(d=>d.closing||'-')],['Daily miles',...current.days.map(d=>dayMiles(d)===null?'-':String(dayMiles(d)))],['Unpaid min',...current.days.map(d=>d.unpaid||'0')]];
+  const cellw=PDF_TABLE_W/8;
+  vs.forEach((cells,r)=>{const yy=sy+r*15;cells.forEach((v,c)=>{const xx=PDF_MARGIN+cellw*c;rect(xx,yy,cellw,15,r===0?pColors.blue:r%2?pColors.white:pColors.pale,pColors.line);let lines=wrapPdfText(v,cellw-9,8.1,r===0||c===0);text(xx+4,yy+10.5,lines[0]||'-',8.1,pColors.ink,r===0||c===0)})});
+  sy+=81;
+  line(PDF_MARGIN,sy,PDF_MARGIN+PDF_TABLE_W,sy);
+  text(PDF_MARGIN,sy+12,`Business mileage: ${businessMiles()} mi   Private mileage: ${current.privateMiles||'0'} mi   Standby: ${current.standby||'-'}`,8,pColors.ink,true);
+  text(PDF_MARGIN,sy+24,`Sick: ${current.sick||'0'} hours   Holiday: ${current.holiday||'0'} hours`,8,pColors.ink);
+  text(PDF_MARGIN,sy+38,'Overtime and unpaid deductions shown for review; confirm payroll treatment with your employer.',7,pColors.muted);
+ }else text(PDF_MARGIN,PAGE_BODY_BOTTOM+9,'Continued on next page',8,pColors.muted);
+ text(PDF_MARGIN,PAGE_H-18,`${current.company||'ISS'} - week ending ${current.weekEnding}`,7.4,pColors.muted);
+ text(PAGE_W-118,PAGE_H-18,`Page ${pageNo} of ${pageCount}`,7.4,pColors.muted);
+ return ops
+}
+function createPdfModel(){const rows=currentPdfRows(),chunks=pdfPagesPlan(rows);return {ops:chunks.map((chunk,i)=>pdfPageCommands(chunk,i+1,chunks.length,i===chunks.length-1)),rowCount:rows.length}}
+function hexPdf(color){let h=color.replace('#','');return [0,2,4].map(i=>(parseInt(h.slice(i,i+2),16)/255).toFixed(3)).join(' ')}
+function drawPdfCanvas(canvas,ops){const scale=1.75;canvas.width=Math.round(PAGE_W*scale);canvas.height=Math.round(PAGE_H*scale);const ctx=canvas.getContext('2d');ctx.scale(scale,scale);
+ for(const o of ops){if(o.kind==='rect'){ctx.fillStyle=o.fill;ctx.fillRect(o.x,o.y,o.w,o.h);if(o.stroke){ctx.strokeStyle=o.stroke;ctx.lineWidth=.55;ctx.strokeRect(o.x,o.y,o.w,o.h)}}
+ else if(o.kind==='line'){ctx.beginPath();ctx.moveTo(o.x1,o.y1);ctx.lineTo(o.x2,o.y2);ctx.strokeStyle=o.color;ctx.lineWidth=o.lw;ctx.stroke()}
+ else if(o.kind==='text'){ctx.fillStyle=o.color;ctx.font=`${o.bold?'bold ':''}${o.size}px Arial`;ctx.textBaseline='alphabetic';ctx.fillText(o.value,o.x,o.y)}
+ }
+}
+function pdfEsc(value){return plainPdfText(value).replace(/\\/g,'\\\\').replace(/\(/g,'\\(').replace(/\)/g,'\\)')}
+function pdfGraphics(ops){let result=[];
+ for(const o of ops){if(o.kind==='rect'){
+  result.push(`${hexPdf(o.fill)} rg ${o.x.toFixed(2)} ${(PAGE_H-o.y-o.h).toFixed(2)} ${o.w.toFixed(2)} ${o.h.toFixed(2)} re f`);
+  if(o.stroke)result.push(`${hexPdf(o.stroke)} RG 0.5 w ${o.x.toFixed(2)} ${(PAGE_H-o.y-o.h).toFixed(2)} ${o.w.toFixed(2)} ${o.h.toFixed(2)} re S`);
+ }else if(o.kind==='line'){result.push(`${hexPdf(o.color)} RG ${o.lw.toFixed(2)} w ${o.x1.toFixed(2)} ${(PAGE_H-o.y1).toFixed(2)} m ${o.x2.toFixed(2)} ${(PAGE_H-o.y2).toFixed(2)} l S`)}
+ else if(o.kind==='text')result.push(`BT /${o.bold?'F2':'F1'} ${o.size} Tf ${hexPdf(o.color)} rg 1 0 0 1 ${o.x.toFixed(2)} ${(PAGE_H-o.y).toFixed(2)} Tm (${pdfEsc(o.value)}) Tj ET`)
+ }
+ return result.join('\n')+'\n';
+}
+function pdfBlobFromModel(model){const num=model.ops.length;const objects=[];
+ objects[1]='<< /Type /Catalog /Pages 2 0 R >>';
+ objects[2]=`<< /Type /Pages /Kids [${model.ops.map((_,i)=>`${5+2*i} 0 R`).join(' ')}] /Count ${num} >>`;
+ objects[3]='<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>';
+ objects[4]='<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>';
+ model.ops.forEach((ops,i)=>{const p=5+i*2,stream=pdfGraphics(ops);objects[p]=`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${PAGE_W} ${PAGE_H}] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents ${p+1} 0 R >>`;objects[p+1]=`<< /Length ${stream.length} >>\nstream\n${stream}endstream`});
+ let output='%PDF-1.4\n%Timesheet\n';const offsets=[0];
+ for(let i=1;i<objects.length;i++){offsets[i]=output.length;output+=`${i} 0 obj\n${objects[i]}\nendobj\n`}
+ const xref=output.length;output+=`xref\n0 ${objects.length}\n0000000000 65535 f \n`;
+ for(let i=1;i<objects.length;i++)output+=`${String(offsets[i]).padStart(10,'0')} 00000 n \n`;
+ output+=`trailer\n<< /Size ${objects.length} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF\n`;
+ return new Blob([output],{type:'application/pdf'});
+}
+function pdfFilename(){const safe=plainPdfText(current.engineer||'engineer').trim().replace(/[^a-zA-Z0-9_-]+/g,'_').slice(0,40);return `${safe||'engineer'}_ISS_timesheet_${current.weekEnding}.pdf`}
+let previewModel=null,previewLastFocus=null;
+function openPreview(){try{previewModel=createPdfModel();previewLastFocus=document.activeElement;
+ const pages=$('previewPages');pages.replaceChildren();
+ previewModel.ops.forEach((ops,i)=>{const wrap=document.createElement('div');wrap.className='pdfsheet';const label=document.createElement('div');label.className='pdfsheetlabel';label.textContent=`Page ${i+1} of ${previewModel.ops.length}`;
+ const canvas=document.createElement('canvas');canvas.setAttribute('aria-label',`Page ${i+1} timesheet preview`);drawPdfCanvas(canvas,ops);wrap.append(label,canvas);pages.append(wrap)});
+ $('previewMessage').textContent=previewModel.ops.length<=2?`${previewModel.ops.length} A4 landscape page${previewModel.ops.length===1?'':'s'} for ${previewModel.rowCount} job${previewModel.rowCount===1?'':'s'}. Review before sharing.`:`${previewModel.ops.length} pages are needed to keep all ${previewModel.rowCount} jobs readable. This exceeds the two-page target; no entries have been omitted.`;
+ $('previewMessage').className=previewModel.ops.length>2?'previewwarning':'hint';
+ $('previewModal').classList.remove('hidden');document.body.classList.add('modal-open');$('closePreview').focus();
+ }catch(e){alert('Could not prepare the preview: '+e.message)}}
+function closePreview(){previewModel=null;$('previewModal').classList.add('hidden');document.body.classList.remove('modal-open');previewLastFocus?.focus?.()}
+function savePdfFile(blob,name){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();setTimeout(()=>{a.remove();URL.revokeObjectURL(url)},60000)}
+$('printBtn').onclick=openPreview;
+$('emailBtn').onclick=openPreview;
+$('closePreview').onclick=closePreview;
+$('previewModal').addEventListener('click',e=>{if(e.target===$('previewModal'))closePreview()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('previewModal').classList.contains('hidden'))closePreview()});
+$('downloadPdf').onclick=()=>{if(!previewModel)return;savePdfFile(pdfBlobFromModel(previewModel),pdfFilename());$('previewMessage').textContent='PDF download requested. Check Downloads in your device Files app. Review the saved PDF before sending.'};
+$('sendPdf').onclick=async()=>{if(!previewModel)return;
+ const addr=(current.emailTo||'').trim();if(addr&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(addr)){alert('Please enter a valid email recipient or leave it blank.');return}
+ const blob=pdfBlobFromModel(previewModel),name=pdfFilename(),subject=`${current.company||'ISS'} timesheet - week ending ${current.weekEnding}`;
+ const file=new File([blob],name,{type:'application/pdf'});
+ try{
+  if(navigator.share && navigator.canShare?.({files:[file]})){
+   await navigator.share({files:[file],title:subject,text:`Timesheet PDF for ${current.engineer||'engineer'}, week ending ${current.weekEnding}.${addr?' Intended recipient: '+addr:''}`});
+   $('previewMessage').textContent='The PDF was handed to the share sheet. Sending is confirmed by your selected app, not by this timesheet.';return;
+  }
+ }catch(e){if(e.name==='AbortError')return;alert('Unable to open the share sheet: '+e.message+'\nThe PDF can still be downloaded.');return}
+ // Email drafts cannot programmatically include attachments without a sharing API.
+ if(!confirm('This browser cannot attach the PDF automatically. Download the PDF and open an email draft? You must attach the downloaded file manually before sending.'))return;
+ savePdfFile(blob,name);
+ const body=`Please find my timesheet for week ending ${current.weekEnding}.\n\nAttach the downloaded PDF file named: ${name}`;
+ const link='mailto:'+encodeURIComponent(addr)+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
+ setTimeout(()=>{window.location.href=link},400);
+ $('previewMessage').textContent='PDF downloaded and email draft requested. Attach the PDF manually before sending.';
+};
+render();save();
+})();
+</script>
+</body></html>
